@@ -1,5 +1,6 @@
 const express = require("express");
 const http = require("http");
+const path = require("path");
 const { Server } = require("socket.io");
 
 const PORT = Number(process.env.PORT) || 3001;
@@ -208,11 +209,22 @@ function removeSocketFromRoom(socket) {
 }
 
 app.get("/", (_req, res) => {
-  res.send("SketchLink backend is running.");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/health", (_req, res) => {
   res.json({ ok: true, rooms: Object.keys(rooms).length });
+});
+
+app.get("/:asset", (req, res, next) => {
+  const allowedAssets = new Set(["script.js", "style.css", "env.js"]);
+  const asset = String(req.params.asset || "");
+  if (!allowedAssets.has(asset)) {
+    next();
+    return;
+  }
+
+  res.sendFile(path.join(__dirname, asset));
 });
 
 io.on("connection", (socket) => {

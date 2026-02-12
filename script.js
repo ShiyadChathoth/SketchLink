@@ -3,7 +3,7 @@ const socketUrl =
   window.NEXT_PUBLIC_SOCKET_URL ||
   window.__ENV__?.NEXT_PUBLIC_SOCKET_URL ||
   socketMetaUrl ||
-  "http://localhost:3001";
+  window.location.origin;
 
 const socket = io(socketUrl, {
   autoConnect: false,
