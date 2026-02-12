@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="socket-url" content="" />
+    <title>SketchLink</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="loginOverlay" class="overlay">
+      <form id="loginForm" class="login-card">
+        <h1>SketchLink</h1>
+        <p>Join a room and start drawing.</p>
+        <label for="nameInput">Name</label>
+        <input id="nameInput" name="name" placeholder="Your name" maxlength="24" required />
+        <label for="roomInput">Room ID</label>
+        <input id="roomInput" name="roomID" placeholder="main-room" maxlength="24" required />
+        <p id="loginError" class="error-text"></p>
+        <button type="submit">Enter Room</button>
+      </form>
+    </div>
+
+    <div class="app-shell">
+      <aside class="panel players-panel">
+        <h2>Players</h2>
+        <ul id="playerList" class="player-list"></ul>
+      </aside>
+
+      <main class="panel canvas-panel">
+        <header class="round-header">
+          <div id="drawingNow" class="drawing-now">Drawing Now: -</div>
+          <div id="wordHint" class="word-hint">Word: -</div>
+          <div id="timer" class="round-timer">--:--</div>
+        </header>
+        <div class="canvas-wrap">
+          <canvas id="board"></canvas>
+        </div>
+      </main>
+
+      <aside class="panel chat-panel">
+        <h2>Guess Chat</h2>
+        <div id="messages" class="messages"></div>
+        <form id="guessForm" class="guess-form">
+          <input id="guessInput" placeholder="Type your guess..." maxlength="60" autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+      </aside>
+    </div>
+
+    <script src="./env.js"></script>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

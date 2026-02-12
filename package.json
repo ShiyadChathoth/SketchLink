@@ -1,0 +1,20 @@
+{
+  "name": "sketchlink-backend",
+  "version": "1.0.0",
+  "description": "Realtime multiplayer drawing and guessing backend for SketchLink",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build:frontend": "node scripts/generate-env.js",
+    "smoke:test": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.1"
+  }
+}
