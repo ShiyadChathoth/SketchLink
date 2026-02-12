@@ -2,12 +2,7 @@
   "buildCommand": "npm run build:frontend",
   "functions": {
     "server.js": {
-      "includeFiles": [
-        "index.html",
-        "style.css",
-        "script.js",
-        "env.js"
-      ]
+      "includeFiles": "*.{html,css,js}"
     }
   },
   "headers": [
