@@ -1,11 +1,12 @@
 const socketMetaUrl = document.querySelector('meta[name="socket-url"]')?.content?.trim();
+const isLocalHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const socketUrl =
   window.NEXT_PUBLIC_SOCKET_URL ||
   window.__ENV__?.NEXT_PUBLIC_SOCKET_URL ||
   socketMetaUrl ||
-  window.location.origin;
+  (isLocalHost ? "http://localhost:3001" : "");
 
-const socket = io(socketUrl, {
+const socket = io(socketUrl || window.location.origin, {
   autoConnect: false,
   transports: ["websocket", "polling"],
 });
@@ -15,6 +16,7 @@ const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementById("loginError");
 const nameInput = document.getElementById("nameInput");
 const roomInput = document.getElementById("roomInput");
+const loginButton = loginForm.querySelector("button[type='submit']");
 
 const canvas = document.getElementById("board");
 const drawingNowEl = document.getElementById("drawingNow");
@@ -41,7 +43,13 @@ const state = {
   isDrawing: false,
   lastPoint: null,
   timerHandle: null,
+  joinPending: false,
 };
+
+function setJoinPending(value) {
+  state.joinPending = value;
+  loginButton.disabled = value;
+}
 
 function formatTime(msLeft) {
   const totalSeconds = Math.max(0, Math.ceil(msLeft / 1000));
@@ -289,6 +297,12 @@ loginForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   loginError.textContent = "";
 
+  if (!socketUrl) {
+    loginError.textContent =
+      "Backend URL not configured. Set NEXT_PUBLIC_SOCKET_URL in Vercel to your backend HTTPS URL.";
+    return;
+  }
+
   const name = nameInput.value.trim();
   const roomID = roomInput.value.trim();
 
@@ -299,6 +313,7 @@ loginForm.addEventListener("submit", (evt) => {
 
   state.playerName = name;
   state.roomID = roomID;
+  setJoinPending(true);
 
   const join = () => socket.emit("join-room", { name, roomID });
 
@@ -312,6 +327,7 @@ loginForm.addEventListener("submit", (evt) => {
 });
 
 socket.on("joined-room", ({ playerID, roomID }) => {
+  setJoinPending(false);
   state.playerID = playerID;
   state.roomID = roomID;
   loginOverlay.classList.add("hidden");
@@ -319,7 +335,13 @@ socket.on("joined-room", ({ playerID, roomID }) => {
 });
 
 socket.on("join-error", ({ message }) => {
+  setJoinPending(false);
   loginError.textContent = message || "Unable to join room.";
+});
+
+socket.on("connect_error", (error) => {
+  setJoinPending(false);
+  loginError.textContent = `Connection failed: ${error?.message || "socket error"}. Check NEXT_PUBLIC_SOCKET_URL and backend status.`;
 });
 
 socket.on("room-state", handleRoundState);
