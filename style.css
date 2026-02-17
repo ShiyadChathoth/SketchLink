@@ -149,16 +149,23 @@ body.dark-mode .layout-toolbar {
   display: none;
 }
 
-.app-shell.hide-players {
-  grid-template-columns: minmax(360px, 1.4fr) 360px;
+/* When only players are hidden → canvas and chat share space */
+.app-shell.hide-players:not(.hide-chat) {
+  grid-template-columns: minmax(420px, 1.5fr) 320px;
 }
 
 .app-shell.hide-chat #chatPanel {
   display: none;
 }
 
-.app-shell.hide-chat {
-  grid-template-columns: 260px minmax(440px, 1.6fr);
+/* When only chat is hidden → players and canvas share space */
+.app-shell.hide-chat:not(.hide-players) {
+  grid-template-columns: 250px minmax(420px, 1.5fr);
+}
+
+/* When both players and chat are hidden → canvas takes full width */
+.app-shell.hide-players.hide-chat {
+  grid-template-columns: minmax(600px, 1fr);
 }
 
 .panel {
