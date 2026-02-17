@@ -23,6 +23,8 @@ const drawingNowEl = document.getElementById("drawingNow");
 const wordHintEl = document.getElementById("wordHint");
 const timerEl = document.getElementById("timer");
 const playerListEl = document.getElementById("playerList");
+const penToolBtn = document.getElementById("penTool");
+const eraserToolBtn = document.getElementById("eraserTool");
 
 const messagesEl = document.getElementById("messages");
 const guessForm = document.getElementById("guessForm");
@@ -44,6 +46,7 @@ const state = {
   lastPoint: null,
   timerHandle: null,
   joinPending: false,
+  tool: "pen",
 };
 
 const confettiContainer = document.getElementById("confettiContainer");
@@ -339,15 +342,20 @@ canvas.addEventListener("pointermove", (evt) => {
   if (!state.canDraw || !state.isDrawing || !state.lastPoint) return;
 
   const nextPoint = getCanvasPoint(evt);
-  drawSegment(state.lastPoint, nextPoint);
+
+  const isEraser = state.tool === "eraser";
+  const color = isEraser ? "#ffffff" : "#1f2937";
+  const lineWidth = isEraser ? 16 : 4;
+
+  drawSegment(state.lastPoint, nextPoint, color, lineWidth);
 
   socket.emit("draw-data", {
     x0: state.lastPoint.nx,
     y0: state.lastPoint.ny,
     x1: nextPoint.nx,
     y1: nextPoint.ny,
-    color: "#1f2937",
-    lineWidth: 4,
+    color,
+    lineWidth,
   });
 
   state.lastPoint = nextPoint;
@@ -484,6 +492,25 @@ socket.on("round-timeout", ({ secretWord, message }) => {
 socket.on("disconnect", () => {
   addMessage("system", "Disconnected from server.");
 });
+
+if (penToolBtn && eraserToolBtn) {
+  const updateToolButtons = () => {
+    penToolBtn.classList.toggle("active", state.tool === "pen");
+    eraserToolBtn.classList.toggle("active", state.tool === "eraser");
+  };
+
+  penToolBtn.addEventListener("click", () => {
+    state.tool = "pen";
+    updateToolButtons();
+  });
+
+  eraserToolBtn.addEventListener("click", () => {
+    state.tool = "eraser";
+    updateToolButtons();
+  });
+
+  updateToolButtons();
+}
 
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();

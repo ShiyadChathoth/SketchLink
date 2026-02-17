@@ -309,6 +309,41 @@ body.dark-mode .round-header {
   background: #ffffff;
 }
 
+.canvas-toolbar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+
+.tool-button {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border: 1px solid #cbd5f5;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.tool-button.active {
+  border-color: var(--accent-dark);
+  background: #e0ecff;
+}
+
+body.dark-mode .tool-button {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e5e7eb;
+  border-color: #1f2937;
+}
+
+body.dark-mode .tool-button.active {
+  background: #1d283a;
+  border-color: #4f46e5;
+}
+
 body.dark-mode .canvas-wrap {
   background: #020617;
   border-color: #1f2937;
