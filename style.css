@@ -127,6 +127,13 @@ body.dark-mode .top-bar {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.5);
 }
 
+/* Hide preset layout buttons on very small screens, keep panel toggles */
+@media (max-width: 540px) {
+  .layout-btn {
+    display: none;
+  }
+}
+
 body.dark-mode .layout-toolbar {
   background: rgba(15, 23, 42, 0.95);
 }
