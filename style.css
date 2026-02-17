@@ -127,18 +127,10 @@ body.dark-mode .top-bar {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.5);
 }
 
-/* Hide preset layout buttons on very small screens, keep panel toggles */
-@media (max-width: 540px) {
-  .layout-btn {
-    display: none;
-  }
-}
-
 body.dark-mode .layout-toolbar {
   background: rgba(15, 23, 42, 0.95);
 }
 
-.layout-btn,
 .toggle-panel-btn {
   border-radius: 999px;
   padding: 4px 10px;
@@ -149,21 +141,8 @@ body.dark-mode .layout-toolbar {
   cursor: pointer;
 }
 
-.layout-btn.active {
-  background: #e5e7eb;
-  color: #111827;
-}
-
 .layout-spacer {
   flex: 1;
-}
-
-.app-shell.layout-focus-draw {
-  grid-template-columns: 180px minmax(480px, 1.5fr) 260px;
-}
-
-.app-shell.layout-focus-chat {
-  grid-template-columns: 220px 1fr 380px;
 }
 
 .app-shell.hide-players #playersPanel {

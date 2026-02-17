@@ -35,9 +35,6 @@ const emojiToggle = document.getElementById("emojiToggle");
 const emojiPicker = document.getElementById("emojiPicker");
 
 const appShell = document.querySelector(".app-shell");
-const layoutBalancedBtn = document.getElementById("layoutBalanced");
-const layoutFocusDrawBtn = document.getElementById("layoutFocusDraw");
-const layoutFocusChatBtn = document.getElementById("layoutFocusChat");
 const togglePlayersBtn = document.getElementById("togglePlayers");
 const toggleChatBtn = document.getElementById("toggleChat");
 const hidePlayersHeaderBtn = document.getElementById("hidePlayersHeader");
