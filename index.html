@@ -21,6 +21,13 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div class="top-bar">
+      <div class="brand">SketchLink</div>
+      <button id="themeToggle" class="theme-toggle" type="button">
+        Dark mode
+      </button>
+    </div>
+
     <div id="loginOverlay" class="overlay">
       <form id="loginForm" class="login-card">
         <h1>SketchLink</h1>
@@ -60,6 +67,8 @@
         </form>
       </aside>
     </div>
+
+    <div id="confettiContainer" class="confetti-container"></div>
 
     <script src="./env.js"></script>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>

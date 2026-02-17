@@ -46,6 +46,78 @@ const state = {
   joinPending: false,
 };
 
+const confettiContainer = document.getElementById("confettiContainer");
+const themeToggleBtn = document.getElementById("themeToggle");
+
+function initialsFromName(name) {
+  const parts = String(name || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function createConfettiBurst() {
+  if (!confettiContainer) return;
+
+  const count = 40;
+  for (let i = 0; i < count; i += 1) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+
+    const left = Math.random() * 100; // viewport %
+    const delay = Math.random() * 0.35;
+    const duration = 0.9 + Math.random() * 0.7;
+
+    piece.style.left = `${left}vw`;
+    piece.style.top = `${-10 - Math.random() * 20}px`;
+    piece.style.animationDelay = `${delay}s`;
+    piece.style.animationDuration = `${duration}s`;
+
+    confettiContainer.appendChild(piece);
+
+    setTimeout(() => {
+      piece.remove();
+    }, (delay + duration + 0.2) * 1000);
+  }
+}
+
+/* Theme handling */
+
+const THEME_KEY = "sketchlink-theme";
+
+function applyTheme(theme) {
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
+  if (themeToggleBtn) {
+    themeToggleBtn.textContent = document.body.classList.contains("dark-mode")
+      ? "Light mode"
+      : "Dark mode";
+  }
+}
+
+function initTheme() {
+  const saved = window.localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initial = saved || (prefersDark ? "dark" : "light");
+  applyTheme(initial);
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const next = document.body.classList.contains("dark-mode") ? "light" : "dark";
+      window.localStorage.setItem(THEME_KEY, next);
+      applyTheme(next);
+    });
+  }
+}
+
+initTheme();
+
 function setJoinPending(value) {
   state.joinPending = value;
   loginButton.disabled = value;
@@ -135,6 +207,15 @@ function renderPlayers() {
     const you = player.id === state.playerID ? " (You)" : "";
     const drawingLabel = player.id === state.currentDrawer ? "Drawing Now" : "";
 
+    // Avatar
+    const avatarWrap = document.createElement("div");
+    avatarWrap.className = "player-avatar";
+    const avatar = document.createElement("div");
+    avatar.className = "avatar-circle";
+    avatar.textContent = initialsFromName(player.name);
+    avatarWrap.appendChild(avatar);
+
+    // Main info
     const playerMain = document.createElement("div");
     playerMain.className = "player-main";
 
@@ -151,7 +232,8 @@ function renderPlayers() {
     roleEl.textContent = drawingLabel;
 
     playerMain.append(nameEl, scoreEl);
-    li.append(playerMain, roleEl);
+
+    li.append(avatarWrap, playerMain, roleEl);
     playerListEl.appendChild(li);
   });
 }
@@ -374,7 +456,11 @@ socket.on("clear-canvas", () => {
 });
 
 socket.on("correct-guess", ({ guesserName, drawerName, secretWord }) => {
-  addMessage("system", `${guesserName} guessed "${secretWord}" correctly. ${drawerName} gets bonus points.`);
+  addMessage(
+    "system",
+    `${guesserName} guessed "${secretWord}" correctly. ${drawerName} gets bonus points.`
+  );
+  createConfettiBurst();
 });
 
 socket.on("guess-feedback", ({ message }) => {
