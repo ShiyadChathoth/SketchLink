@@ -652,17 +652,6 @@ io.on("connection", (socket) => {
     socket.to(roomID).emit("render-line", { x0, y0, x1, y1, color, lineWidth });
   });
 
-  socket.on("request-new-word", () => {
-    const roomID = socketRoomMap.get(socket.id);
-    if (!roomID) return;
-
-    const room = rooms[roomID];
-    if (!room || room.currentDrawer !== socket.id) return;
-
-    // Start a new round but keep the same drawer index
-    startRound(roomID, room.currentDrawerIndex);
-  });
-
   socket.on("submit-guess", (payload = {}) => {
     const { guess } = payload;
     const roomID = socketRoomMap.get(socket.id);

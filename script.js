@@ -23,7 +23,6 @@ const canvas = document.getElementById("board");
 const drawingNowEl = document.getElementById("drawingNow");
 const wordHintEl = document.getElementById("wordHint");
 const timerEl = document.getElementById("timer");
-const newWordButton = document.getElementById("newWordButton");
 const playerListEl = document.getElementById("playerList");
 const penToolBtn = document.getElementById("penTool");
 const eraserToolBtn = document.getElementById("eraserTool");
@@ -202,11 +201,6 @@ function updateWordHint() {
 function updateDrawingLock() {
   state.canDraw = Boolean(state.playerID && state.currentDrawer === state.playerID);
   canvas.classList.toggle("locked", !state.canDraw);
-
-  if (newWordButton) {
-    // Only the current drawer can see/use New word
-    newWordButton.classList.toggle("hidden", !state.canDraw);
-  }
 
   // Chat should always be available, even when drawing
   updateWordHint();
@@ -591,13 +585,6 @@ socket.on("connect_error", (error) => {
 });
 
 socket.on("room-state", handleRoundState);
-
-if (newWordButton) {
-  newWordButton.addEventListener("click", () => {
-    if (!state.canDraw) return;
-    socket.emit("request-new-word", {});
-  });
-}
 
 socket.on("round-start", ({ currentDrawer, currentDrawerName, roundEndsAt, wordLength, wordCategory }) => {
   state.currentDrawer = currentDrawer;
