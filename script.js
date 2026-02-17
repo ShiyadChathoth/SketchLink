@@ -317,6 +317,16 @@ function isMostlyEmoji(text) {
   return emojiMatches.length > 0 && emojiMatches.join("").length >= nonSpace.length * 0.6;
 }
 
+function appendMultilineText(node, text) {
+  const lines = String(text || "").split(/\r?\n/);
+  lines.forEach((line, index) => {
+    node.appendChild(document.createTextNode(line));
+    if (index < lines.length - 1) {
+      node.appendChild(document.createElement("br"));
+    }
+  });
+}
+
 function addMessage(kind, payload) {
   const item = document.createElement("div");
   item.className = `message ${kind}`;
@@ -335,7 +345,7 @@ function addMessage(kind, payload) {
 
     const textSpan = document.createElement("span");
     textSpan.className = "msg-text";
-    textSpan.textContent = guess;
+    appendMultilineText(textSpan, guess);
 
     if (isMostlyEmoji(guess)) {
       item.classList.add("emoji-only");
@@ -347,7 +357,7 @@ function addMessage(kind, payload) {
     if (isMostlyEmoji(text)) {
       item.classList.add("emoji-only");
     }
-    item.textContent = text;
+    appendMultilineText(item, text);
   }
 
   messagesEl.appendChild(item);
@@ -425,20 +435,37 @@ guessForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
 
   const guess = guessInput.value.trim();
-  if (!guess || state.canDraw) return;
+  if (!guess) return;
 
   socket.emit("submit-guess", { guess });
   guessInput.value = "";
 });
+
+// Enter to send, Shift+Enter for newline
+if (guessInput) {
+  guessInput.addEventListener("keydown", (evt) => {
+    if (evt.key === "Enter" && !evt.shiftKey) {
+      evt.preventDefault();
+      guessForm.requestSubmit();
+    }
+  });
+}
 
 if (quickReactions) {
   quickReactions.addEventListener("click", (evt) => {
     const target = evt.target;
     if (!(target instanceof HTMLElement)) return;
     const emoji = target.dataset.emoji;
-    if (!emoji || state.canDraw) return;
+    if (!emoji || !guessInput) return;
 
-    socket.emit("submit-guess", { guess: emoji });
+    const start = guessInput.selectionStart ?? guessInput.value.length;
+    const end = guessInput.selectionEnd ?? guessInput.value.length;
+    const value = guessInput.value;
+    guessInput.value = value.slice(0, start) + emoji + value.slice(end);
+
+    const newPos = start + emoji.length;
+    guessInput.focus();
+    guessInput.selectionStart = guessInput.selectionEnd = newPos;
   });
 }
 

@@ -400,14 +400,15 @@ body.dark-mode .canvas-wrap {
 .quick-reactions {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
+  gap: 4px;
+  margin-top: 4px;
+  justify-content: flex-end;
 }
 
 .quick-reactions button {
   border-radius: 999px;
-  padding: 4px 8px;
-  font-size: 1rem;
+  padding: 2px 6px;
+  font-size: 0.9rem;
   border: 1px solid #cbd5f5;
   background: #ffffff;
   cursor: pointer;
@@ -487,9 +488,11 @@ body.dark-mode .message.hint {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
+  align-items: flex-end;
 }
 
 input,
+textarea,
 button {
   border: 1px solid #b9d4f6;
   border-radius: 10px;
@@ -501,6 +504,7 @@ button {
 }
 
 body.dark-mode input,
+body.dark-mode textarea,
 body.dark-mode button[type="text"],
 body.dark-mode input[type="text"] {
   background: #020617;
