@@ -298,10 +298,58 @@ function denormalizePoint(nx, ny) {
   return { x: nx, y: ny };
 }
 
-function addMessage(kind, text) {
+function hashNameToColor(name) {
+  let hash = 0;
+  const str = String(name || "");
+  for (let i = 0; i < str.length; i += 1) {
+    hash = (hash * 31 + str.charCodeAt(i)) | 0;
+  }
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue}, 70%, 60%)`;
+}
+
+function isMostlyEmoji(text) {
+  const str = String(text || "").trim();
+  if (!str) return false;
+  // Count emoji vs other characters roughly
+  const emojiMatches = str.match(/\p{Extended_Pictographic}/gu) || [];
+  const nonSpace = str.replace(/\s+/g, "");
+  return emojiMatches.length > 0 && emojiMatches.join("").length >= nonSpace.length * 0.6;
+}
+
+function addMessage(kind, payload) {
   const item = document.createElement("div");
   item.className = `message ${kind}`;
-  item.textContent = text;
+
+  // Guess messages can come as structured payload
+  if (kind === "guess" && payload && typeof payload === "object") {
+    const { playerName, guess } = payload;
+
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "msg-name";
+    nameSpan.textContent = playerName;
+    nameSpan.style.color = hashNameToColor(playerName);
+
+    const sepSpan = document.createElement("span");
+    sepSpan.textContent = ": ";
+
+    const textSpan = document.createElement("span");
+    textSpan.className = "msg-text";
+    textSpan.textContent = guess;
+
+    if (isMostlyEmoji(guess)) {
+      item.classList.add("emoji-only");
+    }
+
+    item.append(nameSpan, sepSpan, textSpan);
+  } else {
+    const text = typeof payload === "string" ? payload : String(payload || "");
+    if (isMostlyEmoji(text)) {
+      item.classList.add("emoji-only");
+    }
+    item.textContent = text;
+  }
+
   messagesEl.appendChild(item);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
@@ -477,7 +525,7 @@ socket.on("guess-feedback", ({ message }) => {
 
 socket.on("guess-message", ({ playerName, guess }) => {
   if (!guess) return;
-  addMessage("guess", `${playerName}: ${guess}`);
+  addMessage("guess", { playerName, guess });
 });
 
 socket.on("system-message", ({ message }) => {
