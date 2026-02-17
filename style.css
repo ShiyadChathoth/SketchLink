@@ -366,6 +366,14 @@ body.dark-mode .canvas-wrap {
   cursor: crosshair;
 }
 
+#board.pen-tool {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%231f2937' d='M4 20l1.5-4.5L15 6l3 3L8.5 18.5z'/%3E%3Cpath fill='%23ffffff' d='M3 21h6v-2H5z'/%3E%3C/svg%3E") 4 20, crosshair;
+}
+
+#board.eraser-tool {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231f2937' stroke-width='2'/%3E%3C/svg%3E") 12 12, crosshair;
+}
+
 #board.locked {
   cursor: not-allowed;
 }

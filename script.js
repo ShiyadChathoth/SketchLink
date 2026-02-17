@@ -497,6 +497,9 @@ if (penToolBtn && eraserToolBtn) {
   const updateToolButtons = () => {
     penToolBtn.classList.toggle("active", state.tool === "pen");
     eraserToolBtn.classList.toggle("active", state.tool === "eraser");
+
+    canvas.classList.toggle("pen-tool", state.tool === "pen");
+    canvas.classList.toggle("eraser-tool", state.tool === "eraser");
   };
 
   penToolBtn.addEventListener("click", () => {
