@@ -804,10 +804,6 @@ body.dark-mode .login-card label {
     min-height: 42px;
   }
 
-  .messages {
-    max-height: 260px;
-  }
-
   .quick-reactions {
     justify-content: flex-start;
   }
