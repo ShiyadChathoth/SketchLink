@@ -40,6 +40,8 @@ const layoutFocusDrawBtn = document.getElementById("layoutFocusDraw");
 const layoutFocusChatBtn = document.getElementById("layoutFocusChat");
 const togglePlayersBtn = document.getElementById("togglePlayers");
 const toggleChatBtn = document.getElementById("toggleChat");
+const hidePlayersHeaderBtn = document.getElementById("hidePlayersHeader");
+const hideChatHeaderBtn = document.getElementById("hideChatHeader");
 
 const ctx = canvas.getContext("2d");
 
@@ -720,16 +722,28 @@ if (appShell && layoutBalancedBtn && layoutFocusDrawBtn && layoutFocusChatBtn) {
   });
 }
 
+const togglePlayersVisibility = () => {
+  appShell.classList.toggle("hide-players");
+};
+
+const toggleChatVisibility = () => {
+  appShell.classList.toggle("hide-chat");
+};
+
 if (appShell && togglePlayersBtn) {
-  togglePlayersBtn.addEventListener("click", () => {
-    appShell.classList.toggle("hide-players");
-  });
+  togglePlayersBtn.addEventListener("click", togglePlayersVisibility);
 }
 
 if (appShell && toggleChatBtn) {
-  toggleChatBtn.addEventListener("click", () => {
-    appShell.classList.toggle("hide-chat");
-  });
+  toggleChatBtn.addEventListener("click", toggleChatVisibility);
+}
+
+if (appShell && hidePlayersHeaderBtn) {
+  hidePlayersHeaderBtn.addEventListener("click", togglePlayersVisibility);
+}
+
+if (appShell && hideChatHeaderBtn) {
+  hideChatHeaderBtn.addEventListener("click", toggleChatVisibility);
 }
 
 messagesEl.addEventListener("click", (evt) => {

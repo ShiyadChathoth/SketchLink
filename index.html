@@ -62,7 +62,10 @@
       </div>
 
       <aside class="panel players-panel" id="playersPanel">
-        <h2>Players</h2>
+        <div class="panel-header">
+          <h2>Players</h2>
+          <button id="hidePlayersHeader" class="panel-hide-btn" type="button" aria-label="Hide players panel">×</button>
+        </div>
         <ul id="playerList" class="player-list"></ul>
       </aside>
 
@@ -86,7 +89,10 @@
       </main>
 
       <aside class="panel chat-panel" id="chatPanel">
-        <h2>Chat</h2>
+        <div class="panel-header">
+          <h2>Chat</h2>
+          <button id="hideChatHeader" class="panel-hide-btn" type="button" aria-label="Hide chat panel">×</button>
+        </div>
         <div id="messages" class="messages"></div>
         <form id="guessForm" class="guess-form">
           <button
