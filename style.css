@@ -390,7 +390,7 @@ body.dark-mode .canvas-wrap {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   border: 1px solid var(--panel-border);
   border-radius: 12px;
   background: #f8fbff;
@@ -400,15 +400,15 @@ body.dark-mode .canvas-wrap {
 .quick-reactions {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 2px;
   margin-top: 4px;
   justify-content: flex-end;
 }
 
 .quick-reactions button {
   border-radius: 999px;
-  padding: 2px 6px;
-  font-size: 0.9rem;
+  padding: 1px 5px;
+  font-size: 0.8rem;
   border: 1px solid #cbd5f5;
   background: #ffffff;
   cursor: pointer;
@@ -428,6 +428,37 @@ body.dark-mode .messages {
   padding: 8px 10px;
   font-size: 0.9rem;
   line-height: 1.3;
+  max-width: 80%;
+}
+
+.message.me {
+  margin-left: auto;
+  background: #dbeafe;
+}
+
+body.dark-mode .message.me {
+  background: #1e293b;
+}
+
+.message.other {
+  margin-right: auto;
+}
+
+.message-row {
+  display: flex;
+}
+
+.message-copy {
+  margin-left: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.message-copy:hover {
+  color: #6b7280;
 }
 
 .message.guess:nth-child(odd) {
@@ -449,6 +480,51 @@ body.dark-mode .message.guess:nth-child(odd) {
 .message.emoji-only {
   font-size: 1.4rem;
   text-align: center;
+}
+
+.emoji-toggle {
+  border-radius: 999px;
+  padding: 6px 8px;
+  font-size: 1.1rem;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+body.dark-mode .emoji-toggle {
+  background: #020617;
+  border-color: #1f2937;
+}
+
+.emoji-picker {
+  margin-top: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: #ffffff;
+  padding: 6px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+body.dark-mode .emoji-picker {
+  background: #020617;
+}
+
+.emoji-picker.hidden {
+  display: none;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+  gap: 4px;
+}
+
+.emoji-grid button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
 }
 
 .message.system {
@@ -486,7 +562,7 @@ body.dark-mode .message.hint {
 
 .guess-form {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr auto;
   gap: 8px;
   align-items: flex-end;
 }

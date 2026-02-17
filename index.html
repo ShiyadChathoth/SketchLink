@@ -70,6 +70,14 @@
         <h2>Chat</h2>
         <div id="messages" class="messages"></div>
         <form id="guessForm" class="guess-form">
+          <button
+            id="emojiToggle"
+            class="emoji-toggle"
+            type="button"
+            aria-label="Open emoji picker"
+          >
+            😃
+          </button>
           <textarea
             id="guessInput"
             placeholder="Type a message or guess..."
@@ -78,6 +86,40 @@
           ></textarea>
           <button type="submit">Send</button>
         </form>
+        <div class="emoji-picker hidden" id="emojiPicker">
+          <div class="emoji-grid">
+            <button type="button" data-emoji="😀">😀</button>
+            <button type="button" data-emoji="😁">😁</button>
+            <button type="button" data-emoji="😂">😂</button>
+            <button type="button" data-emoji="🤣">🤣</button>
+            <button type="button" data-emoji="😅">😅</button>
+            <button type="button" data-emoji="😊">😊</button>
+            <button type="button" data-emoji="😍">😍</button>
+            <button type="button" data-emoji="😘">😘</button>
+            <button type="button" data-emoji="😎">😎</button>
+            <button type="button" data-emoji="🤩">🤩</button>
+            <button type="button" data-emoji="😡">😡</button>
+            <button type="button" data-emoji="😭">😭</button>
+            <button type="button" data-emoji="🤯">🤯</button>
+            <button type="button" data-emoji="🤔">🤔</button>
+            <button type="button" data-emoji="😴">😴</button>
+            <button type="button" data-emoji="👍">👍</button>
+            <button type="button" data-emoji="👎">👎</button>
+            <button type="button" data-emoji="🙌">🙌</button>
+            <button type="button" data-emoji="🔥">🔥</button>
+            <button type="button" data-emoji="⭐">⭐</button>
+            <button type="button" data-emoji="❤️">❤️</button>
+            <button type="button" data-emoji="💔">💔</button>
+            <button type="button" data-emoji="🎉">🎉</button>
+            <button type="button" data-emoji="🥳">🥳</button>
+            <button type="button" data-emoji="⚽">⚽</button>
+            <button type="button" data-emoji="🏀">🏀</button>
+            <button type="button" data-emoji="🎮">🎮</button>
+            <button type="button" data-emoji="📚">📚</button>
+            <button type="button" data-emoji="💻">💻</button>
+            <button type="button" data-emoji="🧡">🧡</button>
+          </div>
+        </div>
         <div class="quick-reactions" id="quickReactions">
           <button type="button" data-emoji="😂">😂</button>
           <button type="button" data-emoji="🔥">🔥</button>

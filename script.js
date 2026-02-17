@@ -30,6 +30,8 @@ const messagesEl = document.getElementById("messages");
 const guessForm = document.getElementById("guessForm");
 const guessInput = document.getElementById("guessInput");
 const quickReactions = document.getElementById("quickReactions");
+const emojiToggle = document.getElementById("emojiToggle");
+const emojiPicker = document.getElementById("emojiPicker");
 
 const ctx = canvas.getContext("2d");
 
@@ -328,12 +330,18 @@ function appendMultilineText(node, text) {
 }
 
 function addMessage(kind, payload) {
+  const row = document.createElement("div");
+  row.className = "message-row";
+
   const item = document.createElement("div");
   item.className = `message ${kind}`;
 
+  let rawText = "";
+
   // Guess messages can come as structured payload
   if (kind === "guess" && payload && typeof payload === "object") {
-    const { playerName, guess } = payload;
+    const { playerName, guess, isMe } = payload;
+    rawText = guess || "";
 
     const nameSpan = document.createElement("span");
     nameSpan.className = "msg-name";
@@ -352,15 +360,27 @@ function addMessage(kind, payload) {
     }
 
     item.append(nameSpan, sepSpan, textSpan);
+
+    item.classList.add(isMe ? "me" : "other");
   } else {
     const text = typeof payload === "string" ? payload : String(payload || "");
+    rawText = text;
     if (isMostlyEmoji(text)) {
       item.classList.add("emoji-only");
     }
     appendMultilineText(item, text);
+    item.classList.add("other");
   }
 
-  messagesEl.appendChild(item);
+  const copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "message-copy";
+  copyBtn.textContent = "⧉";
+  copyBtn.dataset.text = rawText;
+
+  row.append(item, copyBtn);
+
+  messagesEl.appendChild(row);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
@@ -469,6 +489,28 @@ if (quickReactions) {
   });
 }
 
+if (emojiToggle && emojiPicker) {
+  emojiToggle.addEventListener("click", () => {
+    emojiPicker.classList.toggle("hidden");
+  });
+
+  emojiPicker.addEventListener("click", (evt) => {
+    const target = evt.target;
+    if (!(target instanceof HTMLElement)) return;
+    const emoji = target.dataset.emoji;
+    if (!emoji || !guessInput) return;
+
+    const start = guessInput.selectionStart ?? guessInput.value.length;
+    const end = guessInput.selectionEnd ?? guessInput.value.length;
+    const value = guessInput.value;
+    guessInput.value = value.slice(0, start) + emoji + value.slice(end);
+
+    const newPos = start + emoji.length;
+    guessInput.focus();
+    guessInput.selectionStart = guessInput.selectionEnd = newPos;
+  });
+}
+
 loginForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   loginError.textContent = "";
@@ -561,9 +603,11 @@ socket.on("guess-feedback", ({ message }) => {
   addMessage("hint", message || "Close guess.");
 });
 
-socket.on("guess-message", ({ playerName, guess }) => {
+socket.on("guess-message", ({ playerID, playerName, guess }) => {
   if (!guess) return;
-  addMessage("guess", { playerName, guess });
+  const isMe = playerID && state.playerID && playerID === state.playerID;
+
+  addMessage("guess", { playerName, guess, isMe });
 
   // Fun confetti when people send celebration emojis
   if (/[🎉🥳]/u.test(guess)) {
@@ -605,6 +649,19 @@ if (penToolBtn && eraserToolBtn) {
 
   updateToolButtons();
 }
+
+messagesEl.addEventListener("click", (evt) => {
+  const target = evt.target;
+  if (!(target instanceof HTMLElement)) return;
+  if (!target.classList.contains("message-copy")) return;
+
+  const text = target.dataset.text || "";
+  if (!text) return;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+});
 
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
