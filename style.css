@@ -397,6 +397,27 @@ body.dark-mode .canvas-wrap {
   padding: 10px;
 }
 
+.quick-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.quick-reactions button {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+body.dark-mode .quick-reactions button {
+  background: #020617;
+  border-color: #1f2937;
+}
+
 body.dark-mode .messages {
   background: #020617;
 }

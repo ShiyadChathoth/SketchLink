@@ -29,6 +29,7 @@ const eraserToolBtn = document.getElementById("eraserTool");
 const messagesEl = document.getElementById("messages");
 const guessForm = document.getElementById("guessForm");
 const guessInput = document.getElementById("guessInput");
+const quickReactions = document.getElementById("quickReactions");
 
 const ctx = canvas.getContext("2d");
 
@@ -431,6 +432,17 @@ guessForm.addEventListener("submit", (evt) => {
   guessInput.value = "";
 });
 
+if (quickReactions) {
+  quickReactions.addEventListener("click", (evt) => {
+    const target = evt.target;
+    if (!(target instanceof HTMLElement)) return;
+    const emoji = target.dataset.emoji;
+    if (!emoji || state.canDraw) return;
+
+    socket.emit("submit-guess", { guess: emoji });
+  });
+}
+
 loginForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   loginError.textContent = "";
@@ -526,6 +538,11 @@ socket.on("guess-feedback", ({ message }) => {
 socket.on("guess-message", ({ playerName, guess }) => {
   if (!guess) return;
   addMessage("guess", { playerName, guess });
+
+  // Fun confetti when people send celebration emojis
+  if (/[🎉🥳]/u.test(guess)) {
+    createConfettiBurst();
+  }
 });
 
 socket.on("system-message", ({ message }) => {
