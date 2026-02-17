@@ -290,6 +290,32 @@ body.dark-mode .round-header {
   color: var(--text-main);
 }
 
+.round-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.new-word-button {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
+  color: var(--accent-dark);
+  cursor: pointer;
+}
+
+.new-word-button.hidden {
+  display: none;
+}
+
+body.dark-mode .new-word-button {
+  background: #020617;
+  border-color: #1f2937;
+}
+
 .round-timer {
   min-width: 58px;
   text-align: right;
