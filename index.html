@@ -52,12 +52,21 @@
     </div>
 
     <div class="app-shell">
-      <aside class="panel players-panel">
+      <div class="layout-toolbar">
+        <button id="layoutBalanced" class="layout-btn active" type="button">Balanced</button>
+        <button id="layoutFocusDraw" class="layout-btn" type="button">Focus draw</button>
+        <button id="layoutFocusChat" class="layout-btn" type="button">Focus chat</button>
+        <div class="layout-spacer"></div>
+        <button id="togglePlayers" class="toggle-panel-btn" type="button">Players</button>
+        <button id="toggleChat" class="toggle-panel-btn" type="button">Chat</button>
+      </div>
+
+      <aside class="panel players-panel" id="playersPanel">
         <h2>Players</h2>
         <ul id="playerList" class="player-list"></ul>
       </aside>
 
-      <main class="panel canvas-panel">
+      <main class="panel canvas-panel" id="canvasPanel">
         <header class="round-header">
           <div id="drawingNow" class="drawing-now">Drawing Now: -</div>
           <div id="wordHint" class="word-hint">Word: -</div>
@@ -76,7 +85,7 @@
         </div>
       </main>
 
-      <aside class="panel chat-panel">
+      <aside class="panel chat-panel" id="chatPanel">
         <h2>Chat</h2>
         <div id="messages" class="messages"></div>
         <form id="guessForm" class="guess-form">

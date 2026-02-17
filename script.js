@@ -34,6 +34,13 @@ const quickReactions = document.getElementById("quickReactions");
 const emojiToggle = document.getElementById("emojiToggle");
 const emojiPicker = document.getElementById("emojiPicker");
 
+const appShell = document.querySelector(".app-shell");
+const layoutBalancedBtn = document.getElementById("layoutBalanced");
+const layoutFocusDrawBtn = document.getElementById("layoutFocusDraw");
+const layoutFocusChatBtn = document.getElementById("layoutFocusChat");
+const togglePlayersBtn = document.getElementById("togglePlayers");
+const toggleChatBtn = document.getElementById("toggleChat");
+
 const ctx = canvas.getContext("2d");
 
 const state = {
@@ -671,6 +678,44 @@ if (penToolBtn && eraserToolBtn) {
   });
 
   updateToolButtons();
+}
+
+if (appShell && layoutBalancedBtn && layoutFocusDrawBtn && layoutFocusChatBtn) {
+  const clearLayoutClasses = () => {
+    appShell.classList.remove("layout-focus-draw", "layout-focus-chat");
+    layoutBalancedBtn.classList.remove("active");
+    layoutFocusDrawBtn.classList.remove("active");
+    layoutFocusChatBtn.classList.remove("active");
+  };
+
+  layoutBalancedBtn.addEventListener("click", () => {
+    clearLayoutClasses();
+    layoutBalancedBtn.classList.add("active");
+  });
+
+  layoutFocusDrawBtn.addEventListener("click", () => {
+    clearLayoutClasses();
+    appShell.classList.add("layout-focus-draw");
+    layoutFocusDrawBtn.classList.add("active");
+  });
+
+  layoutFocusChatBtn.addEventListener("click", () => {
+    clearLayoutClasses();
+    appShell.classList.add("layout-focus-chat");
+    layoutFocusChatBtn.classList.add("active");
+  });
+}
+
+if (appShell && togglePlayersBtn) {
+  togglePlayersBtn.addEventListener("click", () => {
+    appShell.classList.toggle("hide-players");
+  });
+}
+
+if (appShell && toggleChatBtn) {
+  toggleChatBtn.addEventListener("click", () => {
+    appShell.classList.toggle("hide-chat");
+  });
 }
 
 messagesEl.addEventListener("click", (evt) => {

@@ -100,12 +100,79 @@ body.dark-mode .top-bar {
 
 .app-shell {
   height: 100vh;
-  padding: 72px 16px 16px;
+  padding: 112px 16px 16px;
   display: grid;
   grid-template-columns: 250px minmax(360px, 1fr) 320px;
   gap: 14px;
   width: min(1120px, 100%);
   margin: 0 auto;
+}
+
+/* Layout toolbar */
+
+.layout-toolbar {
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1120px, 100% - 16px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  z-index: 24;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.5);
+}
+
+body.dark-mode .layout-toolbar {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.layout-btn,
+.toggle-panel-btn {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border: 1px solid #4b5563;
+  background: transparent;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.layout-btn.active {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.layout-spacer {
+  flex: 1;
+}
+
+.app-shell.layout-focus-draw {
+  grid-template-columns: 180px minmax(480px, 1.5fr) 260px;
+}
+
+.app-shell.layout-focus-chat {
+  grid-template-columns: 220px 1fr 380px;
+}
+
+.app-shell.hide-players #playersPanel {
+  display: none;
+}
+
+.app-shell.hide-players {
+  grid-template-columns: minmax(360px, 1.4fr) 360px;
+}
+
+.app-shell.hide-chat #chatPanel {
+  display: none;
+}
+
+.app-shell.hide-chat {
+  grid-template-columns: 260px minmax(440px, 1.6fr);
 }
 
 .panel {
@@ -737,6 +804,12 @@ body.dark-mode .login-card label {
       "chat chat";
   }
 
+  .layout-toolbar {
+    top: 52px;
+    padding: 4px 8px;
+    flex-wrap: wrap;
+  }
+
   .players-panel {
     grid-area: players;
   }
@@ -760,8 +833,13 @@ body.dark-mode .login-card label {
       "canvas"
       "players"
       "chat";
-    padding: 72px 8px 8px;
+    padding: 112px 8px 8px;
     row-gap: 10px;
+  }
+
+  .layout-toolbar {
+    top: 56px;
+    font-size: 0.7rem;
   }
 
   .canvas-panel {
