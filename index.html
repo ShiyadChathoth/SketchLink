@@ -55,8 +55,12 @@
         </header>
         <div class="canvas-wrap">
           <div class="canvas-toolbar">
-            <button id="penTool" class="tool-button" type="button">Pen</button>
-            <button id="eraserTool" class="tool-button" type="button">Eraser</button>
+            <button id="penTool" class="tool-button" type="button" aria-label="Pen tool">
+              <span class="tool-icon">✏️</span>
+            </button>
+            <button id="eraserTool" class="tool-button" type="button" aria-label="Eraser tool">
+              <span class="tool-icon">🧽</span>
+            </button>
           </div>
           <canvas id="board"></canvas>
         </div>
