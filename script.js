@@ -185,8 +185,7 @@ function updateWordHint() {
 function updateDrawingLock() {
   state.canDraw = Boolean(state.playerID && state.currentDrawer === state.playerID);
   canvas.classList.toggle("locked", !state.canDraw);
-  guessInput.disabled = state.canDraw;
-  guessForm.querySelector("button").disabled = state.canDraw;
+  // Chat should always be available, even when drawing
   updateWordHint();
 }
 
