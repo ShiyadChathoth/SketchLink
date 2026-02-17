@@ -679,46 +679,6 @@ if (penToolBtn && eraserToolBtn) {
   updateToolButtons();
 }
 
-const LAYOUT_KEY = "sketchlink-layout";
-
-if (appShell && layoutBalancedBtn && layoutFocusDrawBtn && layoutFocusChatBtn) {
-  const applyLayout = (layout) => {
-    appShell.classList.remove("layout-focus-draw", "layout-focus-chat");
-    layoutBalancedBtn.classList.remove("active");
-    layoutFocusDrawBtn.classList.remove("active");
-    layoutFocusChatBtn.classList.remove("active");
-
-    if (layout === "focus-draw") {
-      appShell.classList.add("layout-focus-draw");
-      layoutFocusDrawBtn.classList.add("active");
-    } else if (layout === "focus-chat") {
-      appShell.classList.add("layout-focus-chat");
-      layoutFocusChatBtn.classList.add("active");
-    } else {
-      layoutBalancedBtn.classList.add("active");
-    }
-  };
-
-  // Restore saved layout preference if any
-  const savedLayout = window.localStorage.getItem(LAYOUT_KEY) || "balanced";
-  applyLayout(savedLayout);
-
-  layoutBalancedBtn.addEventListener("click", () => {
-    applyLayout("balanced");
-    window.localStorage.setItem(LAYOUT_KEY, "balanced");
-  });
-
-  layoutFocusDrawBtn.addEventListener("click", () => {
-    applyLayout("focus-draw");
-    window.localStorage.setItem(LAYOUT_KEY, "focus-draw");
-  });
-
-  layoutFocusChatBtn.addEventListener("click", () => {
-    applyLayout("focus-chat");
-    window.localStorage.setItem(LAYOUT_KEY, "focus-chat");
-  });
-}
-
 const togglePlayersVisibility = () => {
   appShell.classList.toggle("hide-players");
 };
