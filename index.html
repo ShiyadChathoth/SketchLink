@@ -35,7 +35,21 @@
         <label for="nameInput">Name</label>
         <input id="nameInput" name="name" placeholder="Your name" maxlength="24" required />
         <label for="roomInput">Room ID</label>
-        <input id="roomInput" name="roomID" placeholder="main-room" maxlength="24" required />
+        <input
+          id="roomInput"
+          name="roomID"
+          placeholder="main-room"
+          maxlength="24"
+          list="roomPresets"
+          required
+        />
+        <datalist id="roomPresets">
+          <option value="main-room"></option>
+          <option value="lab-1"></option>
+          <option value="lab-2"></option>
+          <option value="friends-room"></option>
+          <option value="fun-room"></option>
+        </datalist>
         <p id="loginError" class="error-text"></p>
         <button type="submit">Enter Room</button>
       </form>
