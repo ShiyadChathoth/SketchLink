@@ -847,11 +847,8 @@ body.dark-mode .login-card label {
   .app-shell {
     height: auto;
     min-height: 100vh;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "canvas"
-      "players"
-      "chat";
+    display: flex;
+    flex-direction: column;
     padding: 112px 8px 8px;
     row-gap: 10px;
   }
@@ -863,6 +860,17 @@ body.dark-mode .login-card label {
 
   .canvas-panel {
     min-height: 320px;
+    order: 1;
+  }
+
+  .players-panel {
+    padding: 10px;
+    order: 2;
+  }
+
+  .chat-panel {
+    padding: 10px;
+    order: 3;
   }
 
   .canvas-wrap {
@@ -879,11 +887,6 @@ body.dark-mode .login-card label {
   .word-hint,
   .round-timer {
     text-align: left;
-  }
-
-  .players-panel,
-  .chat-panel {
-    padding: 10px;
   }
 
   .guess-form {
