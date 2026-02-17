@@ -667,6 +667,10 @@ body.dark-mode .login-card h1 {
   color: #466487;
 }
 
+.hidden {
+  display: none;
+}
+
 body.dark-mode .login-card label {
   color: #9ca3af;
 }

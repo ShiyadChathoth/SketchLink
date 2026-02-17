@@ -35,17 +35,17 @@
         <label for="nameInput">Name</label>
         <input id="nameInput" name="name" placeholder="Your name" maxlength="24" required />
         <label for="roomInput">Room ID</label>
+        <select id="roomInput" name="roomID" required>
+          <option value="main-room">main-room</option>
+          <option value="custom">Custom...</option>
+        </select>
         <input
-          id="roomInput"
-          name="roomID"
-          placeholder="main-room"
+          id="customRoomInput"
+          name="customRoomID"
+          placeholder="Type custom room ID"
           maxlength="24"
-          list="roomPresets"
-          required
+          class="hidden"
         />
-        <datalist id="roomPresets">
-          <option value="main-room"></option>
-        </datalist>
         <p id="loginError" class="error-text"></p>
         <button type="submit">Enter Room</button>
       </form>

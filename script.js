@@ -16,6 +16,7 @@ const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementById("loginError");
 const nameInput = document.getElementById("nameInput");
 const roomInput = document.getElementById("roomInput");
+const customRoomInput = document.getElementById("customRoomInput");
 const loginButton = loginForm.querySelector("button[type='submit']");
 
 const canvas = document.getElementById("board");
@@ -123,6 +124,16 @@ function initTheme() {
 }
 
 initTheme();
+
+if (roomInput && customRoomInput) {
+  roomInput.addEventListener("change", () => {
+    const isCustom = roomInput.value === "custom";
+    customRoomInput.classList.toggle("hidden", !isCustom);
+    if (isCustom) {
+      customRoomInput.focus();
+    }
+  });
+}
 
 function setJoinPending(value) {
   state.joinPending = value;
@@ -522,7 +533,11 @@ loginForm.addEventListener("submit", (evt) => {
   }
 
   const name = nameInput.value.trim();
-  const roomID = roomInput.value.trim();
+  let roomID = roomInput.value;
+  if (roomID === "custom" && customRoomInput) {
+    roomID = customRoomInput.value;
+  }
+  roomID = String(roomID || "").trim();
 
   if (!name || !roomID) {
     loginError.textContent = "Name and Room ID are required.";
