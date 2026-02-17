@@ -227,7 +227,14 @@ function oneEditAway(a, b) {
 }
 
 function pickWord() {
-  return WORDS[Math.floor(Math.random() * WORDS.length)];
+  const categoryNames = Object.keys(CATEGORIES);
+  const categoryName = categoryNames[Math.floor(Math.random() * categoryNames.length)];
+  const words = CATEGORIES[categoryName] || [];
+  if (!words.length) {
+    return { word: WORDS[Math.floor(Math.random() * WORDS.length)], category: null };
+  }
+  const word = words[Math.floor(Math.random() * words.length)];
+  return { word, category: categoryName };
 }
 
 function getOrCreateRoom(roomID) {
@@ -237,6 +244,7 @@ function getOrCreateRoom(roomID) {
       currentDrawer: null,
       currentDrawerIndex: -1,
       secretWord: "",
+      secretCategory: null,
       roundEndsAt: null,
       roundTimer: null,
     };
@@ -253,6 +261,7 @@ function emitRoomState(roomID) {
     currentDrawer: room.currentDrawer,
     roundEndsAt: room.roundEndsAt,
     wordLength: room.secretWord ? room.secretWord.length : 0,
+    wordCategory: room.secretCategory || null,
   });
 }
 
@@ -277,7 +286,9 @@ function startRound(roomID, forcedIndex) {
 
   const drawer = room.players[room.currentDrawerIndex];
   room.currentDrawer = drawer.id;
-  room.secretWord = pickWord();
+  const picked = pickWord();
+  room.secretWord = picked.word;
+  room.secretCategory = picked.category;
   room.roundEndsAt = Date.now() + ROUND_DURATION_MS;
 
   io.to(roomID).emit("clear-canvas");
@@ -286,6 +297,7 @@ function startRound(roomID, forcedIndex) {
     currentDrawerName: drawer.name,
     roundEndsAt: room.roundEndsAt,
     wordLength: room.secretWord.length,
+    wordCategory: room.secretCategory,
   });
   io.to(room.currentDrawer).emit("your-word", { secretWord: room.secretWord });
 

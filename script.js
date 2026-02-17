@@ -44,6 +44,7 @@ const state = {
   currentDrawer: null,
   roundEndsAt: null,
   wordLength: 0,
+  wordCategory: "",
   secretWord: "",
   canDraw: false,
   isDrawing: false,
@@ -178,6 +179,8 @@ function wordMask(length) {
 }
 
 function updateWordHint() {
+  const categoryLabel = state.wordCategory ? ` • Category: ${state.wordCategory}` : "";
+
   if (!state.currentDrawer) {
     wordHintEl.textContent = "Word: -";
     return;
@@ -185,14 +188,14 @@ function updateWordHint() {
 
   if (state.canDraw) {
     if (state.secretWord) {
-      wordHintEl.textContent = `Your word: ${state.secretWord}`;
+      wordHintEl.textContent = `Your word: ${state.secretWord}${categoryLabel}`;
       return;
     }
-    wordHintEl.textContent = "Your word: (waiting...)";
+    wordHintEl.textContent = `Your word: (waiting...)${categoryLabel}`;
     return;
   }
 
-  wordHintEl.textContent = `Word: ${wordMask(state.wordLength)}`;
+  wordHintEl.textContent = `Word: ${wordMask(state.wordLength)}${categoryLabel}`;
 }
 
 function updateDrawingLock() {
@@ -395,7 +398,7 @@ function addMessage(kind, payload) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function handleRoundState({ players, currentDrawer, roundEndsAt, wordLength }) {
+function handleRoundState({ players, currentDrawer, roundEndsAt, wordLength, wordCategory }) {
   if (Array.isArray(players)) {
     state.players = players;
   }
@@ -407,6 +410,9 @@ function handleRoundState({ players, currentDrawer, roundEndsAt, wordLength }) {
   }
   if (typeof wordLength === "number") {
     state.wordLength = wordLength;
+  }
+  if (typeof wordCategory === "string" || wordCategory === null) {
+    state.wordCategory = wordCategory || "";
   }
 
   if (!state.canDraw) {
@@ -579,10 +585,11 @@ socket.on("connect_error", (error) => {
 
 socket.on("room-state", handleRoundState);
 
-socket.on("round-start", ({ currentDrawer, currentDrawerName, roundEndsAt, wordLength }) => {
+socket.on("round-start", ({ currentDrawer, currentDrawerName, roundEndsAt, wordLength, wordCategory }) => {
   state.currentDrawer = currentDrawer;
   state.roundEndsAt = roundEndsAt;
   state.wordLength = wordLength;
+  state.wordCategory = wordCategory || "";
   state.secretWord = "";
   updateDrawingLock();
   updateRoundHeader();
